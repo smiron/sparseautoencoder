@@ -58,8 +58,10 @@ cost = cost + lambda / 2 * ( sum(sum(W1 .* W1)) +sum( sum(W2 .* W2)) );
 W1grad = W1grad + lambda * W1;
 W2grad = W2grad + lambda * W2;
 
-cost = gather(cost);
-grad = gather([W1grad(:) ; W2grad(:) ; b1grad(:) ; b2grad(:)]);
+cost = double(gather(cost));
+grad = double(gather([W1grad(:) ; W2grad(:) ; b1grad(:) ; b2grad(:)]));
+
+wait( gpuDevice );
 
 end
 
