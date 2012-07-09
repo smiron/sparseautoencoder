@@ -24,18 +24,21 @@ startTime = cputime;
 theta = initializeParameters(hiddenSize, visibleSize);
 fprintf('initializeParameters TIME: %g\n',cputime-startTime);
 
+startTime = cputime;
 trainGpu
+gpuTotalTime = cputime-startTime;
+fprintf('minFunc TIME: %g\n', gpuTotalTime);
 
-fprintf('minFunc TIME: %g\n',cputime-startTime);
-
+startTime = cputime;
 theta = initializeParameters(hiddenSize, visibleSize);
 fprintf('initializeParameters TIME: %g\n',cputime-startTime);
 
+startTime = cputime;
 trainCpu
+cpuTotalTime = cputime - startTime;
+fprintf('minFunc TIME: %g\n', cpuTotalTime);
 
-fprintf('minFunc TIME: %g\n',cputime-startTime);
-
-                          
+fprintf('Imp: %g\n', cpuTotalTime / gpuTotalTime);
                           
 %%======================================================================
 %% STEP 5: Visualization 
