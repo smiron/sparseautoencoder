@@ -1,5 +1,8 @@
 %% main application
 fprintf('\n\n\n------------------------------------------------\n')
+% load images from disk
+load IMAGES;    
+
 patchsize = 12;
 numpatches = 10000;
 
@@ -13,32 +16,18 @@ lambda = 0.0001;     % weight decay parameter
 beta = 3;            % weight of sparsity penalty term      
 
 
+%startTime = cputime;
+% DO WORK
+%fprintf('sampleIMAGES TIME: %g\n',cputime-startTime);
 
+patches = sampleImages(IMAGES, patchsize, numpatches);
 
-startTime = cputime;
-patches = sampleIMAGES(patchsize, numpatches);
-fprintf('sampleIMAGES TIME: %g\n',cputime-startTime);
-
-
-startTime = cputime;
 theta = initializeParameters(hiddenSize, visibleSize);
-fprintf('initializeParameters TIME: %g\n',cputime-startTime);
 
-startTime = cputime;
-trainGpu
-gpuTotalTime = cputime-startTime;
-fprintf('minFunc TIME: %g\n', gpuTotalTime);
+[opttheta, cost] = ...
+    trainCase(theta, patches, visibleSize, hiddenSize, ...
+        lambda, sparsityParam, beta);
 
-startTime = cputime;
-theta = initializeParameters(hiddenSize, visibleSize);
-fprintf('initializeParameters TIME: %g\n',cputime-startTime);
-
-startTime = cputime;
-trainCpu
-cpuTotalTime = cputime - startTime;
-fprintf('minFunc TIME: %g\n', cpuTotalTime);
-
-fprintf('Imp: %g\n', cpuTotalTime / gpuTotalTime);
                           
 %%======================================================================
 %% STEP 5: Visualization 
