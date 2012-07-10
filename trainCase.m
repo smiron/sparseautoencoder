@@ -1,5 +1,7 @@
-function [opttheta, cost] = trainCase(theta, patches)
-
+function [opttheta, cost] = ...
+    trainCase(theta, patches, visibleSize, hiddenSize, ...
+        lambda, sparsityParam, beta)
+%% prepare execution
 import parallel.gpu.GPUArray
 
 gtheta = gpuArray(theta);
@@ -15,8 +17,9 @@ options.Method = 'lbfgs'; % Here, we use L-BFGS to optimize our cost
 options.maxIter = 400;    % Maximum number of iterations of L-BFGS to run 
 options.display = 'off';
 
+%%======================================================================
+%% minimize
 try
-    
     [opttheta, cost] = minFunc( @(p) sparseAutoencoderCostGpu(p, ...
                                        visibleSize, hiddenSize, ...
                                        lambda, sparsityParam, ...
@@ -26,4 +29,4 @@ try
 catch exception
     disp(exception)
 end
-    
+%%======================================================================
