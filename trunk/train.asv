@@ -1,12 +1,13 @@
-function theta = train(patchsize, hiddenSize, numpatches, sparsityParam, lambda , beta)
-
-
 %% main application
 fprintf('\n\n\n------------------------------------------------\n')
 % load images from disk
 load IMAGES;    
 
+patchsize = 12;
+numpatches = 10000;
+
 visibleSize = patchsize * patchsize;
+hiddenSize = ceil(visibleSize / 2.56);
 
 sparsityParam = 0.01;   % desired average activation of the hidden units.
                      % (This was denoted by the Greek alphabet rho, which looks like a lower-case "p",
@@ -31,6 +32,10 @@ theta = initializeParameters(hiddenSize, visibleSize);
 %%======================================================================
 %% STEP 5: Visualization 
 W1 = reshape(opttheta(1:hiddenSize*visibleSize), hiddenSize, visibleSize);
+W2 = reshape(opttheta(hiddenSize*visibleSize+1:2*hiddenSize*visibleSize), visibleSize, hiddenSize);
+b1 = opttheta(2*hiddenSize*visibleSize+1:2*hiddenSize*visibleSize+hiddenSize);
+b2 = opttheta(2*hiddenSize*visibleSize+hiddenSize+1:end);
+
 display_network(W1', 12); 
 
 
@@ -44,9 +49,13 @@ path =  strcat('Results\',name,'\weights.jpg');
 
 print('-djpeg',path);   % save the visualization to a file 
 
-thetaPath =  strcat('Results\',name,'\theta.txt');
-dataSizePath =  strcat('Results\',name,'\dataSize.txt');
+w1path =  strcat('Results\',name,'\w1.txt');
+w2path =  strcat('Results\',name,'\w2.txt');
+thetapath =  strcat('Results\',name,'\theta.txt');
+costpath =  strcat('Results\',name,'\cost.txt');
 
-dlmwrite(thetaPath,opttheta);
-dlmwrite(dataSizePath,[visibleSize,hiddenSize,cost]);
+dlmwrite(w1path,W1);
+dlmwrite(w2path,W2);
+dlmwrite(thetapath,opttheta);
+dlmwrite(costpath,cost);
 
