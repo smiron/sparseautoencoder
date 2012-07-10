@@ -31,7 +31,7 @@ theta = initializeParameters(hiddenSize, visibleSize);
                           
 %%======================================================================
 %% STEP 5: Visualization 
-W1 = gather(reshape(opttheta(1:hiddenSize*visibleSize), hiddenSize, visibleSize));
+W1 = reshape(opttheta(1:hiddenSize*visibleSize), hiddenSize, visibleSize);
 display_network(W1', 12); 
 
 print -djpeg weights.jpg   % save the visualization to a file 
