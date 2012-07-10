@@ -4,9 +4,6 @@ function [opttheta, cost] = ...
 %% prepare execution
 import parallel.gpu.GPUArray
 
-gtheta = gpuArray(theta);
-gpatches =  gpuArray(patches);
-
 %  Use minFunc to minimize the function
 addpath minFunc/
 options.Method = 'lbfgs'; % Here, we use L-BFGS to optimize our cost
@@ -23,8 +20,8 @@ try
     [opttheta, cost] = minFunc( @(p) sparseAutoencoderCostGpu(p, ...
                                        visibleSize, hiddenSize, ...
                                        lambda, sparsityParam, ...
-                                       beta, gpatches), ...
-                                  gtheta, options);
+                                       beta, patches), ...
+                                  theta, options);
                               
 catch exception
     disp(exception)
