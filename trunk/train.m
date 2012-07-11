@@ -19,6 +19,8 @@ beta = 3;            % weight of sparsity penalty term
 % DO WORK
 %fprintf('sampleIMAGES TIME: %g\n',cputime-startTime);
 
+startTime = cputime;
+
 patches = sampleImages(IMAGES, patchsize, numpatches);
 
 gpatches = gpuArray(patches);
@@ -49,6 +51,10 @@ print('-djpeg',path);   % save the visualization to a file
 thetaPath =  strcat('Results\',name,'\theta.txt');
 dataSizePath =  strcat('Results\',name,'\dataSize.txt');
 
+totalTime = cputime-startTime;
+
 dlmwrite(thetaPath,opttheta);
-dlmwrite(dataSizePath,[visibleSize,hiddenSize,cost]);
+dlmwrite(dataSizePath,[visibleSize,hiddenSize,cost, totalTime]);
+
+fprintf('sampleIMAGES TIME: %g\n',totalTime);
 
