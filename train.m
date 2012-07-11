@@ -21,10 +21,12 @@ beta = 3;            % weight of sparsity penalty term
 
 patches = sampleImages(IMAGES, patchsize, numpatches);
 
+gpatches = gpuArray(patches);
+
 theta = initializeParameters(hiddenSize, visibleSize);
 
 [opttheta, cost] = ...
-    trainCase(theta, patches, visibleSize, hiddenSize, ...
+    trainCase(theta, gpatches, visibleSize, hiddenSize, ...
         lambda, sparsityParam, beta);
 
                           
